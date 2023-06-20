@@ -3,13 +3,32 @@
 
 ############################
 
+# The sys.exit() method is used to terminate execution of the code, I will use
+# it in case the user enters invalid input, e.g. a four-letter guessword or
+# pattern;
+from sys import exit
+
 # Throughout this program, I use many print() statements to increase
 # legibility in the terminal, e.g. below;
 print()
 
 print("This program is similar to Wordle! Please enter a five-letter word now...")
+print()
 guessword = input()
 print()
+
+# Use the strip() method to eliminate any whitespace before and/or after the 
+# guessword;
+guessword = guessword.strip()
+
+# This version of the game only accepts five-letter guesswords, ergo if the 
+# player enters a word of any length other than five, we exit the program;
+if len(guessword) != 5:
+    print("Sorry, you have entered a guessword that is not equal to five\n"
+            "characters in length. The game will now end, please start over\n"
+            "from the beginning if you'd like to play again :)")
+    print()
+    exit()
 
 # The user also gets to enter any pattern, using the characters b, g, and y;
 # this pattern should also be five letters;
@@ -17,8 +36,22 @@ print("Please enter your five-letter pattern now: b for blue, g for green,\n"
         "and y for yellow. Blue means the letter is NOT in the word at all,\n"
         "green means the letter IS in the word in that SAME position,\n"
         "and yellow means the letter IS in the word but NOT in that position.")
+print()
 pattern = input()
 print()
+
+# Use the strip() method to eliminate any whitespace before and/or after the 
+# pattern;
+pattern = pattern.strip()
+
+# This version of the game only accepts five-letter patterns, ergo if the 
+# player enters a pattern of any length other than five, we exit the program;
+if len(pattern) != 5:
+    print("Sorry, you have entered a pattern that is not equal to five\n"
+            "characters in length. The game will now end, please start over\n"
+            "from the beginning if you'd like to play again :)")
+    print()
+    exit()
 
 # We will create a dictionary to store the combinations of the colors and letters;
 # we will use lists within the dictionary to store all of the letters corresponding
@@ -47,8 +80,8 @@ for n in range(5):
         print('This is not a valid color-guessword combination.')
         break
 
-print(dict1)
-print()
+#print(dict1)
+#print()
 
 # Words that pass all of the below tests will be added to the matches list as 
 # valid answers to the guessword;
@@ -59,6 +92,7 @@ matches = []
 # match or not;
 wordlist = open('words.txt','r')
 
+# Loop through every word in the wordlist to look for potential matches;
 for matchword in wordlist:
     
     # dict2 only exists for one iteration of the loop at a time, only for the
@@ -118,7 +152,17 @@ for matchword in wordlist:
                         # spaces...
                         matchword = matchword.strip()
                         
-                        # then, finally, add the matchword to matches list;
+                        # finally, add the matchword to matches list;
                         matches.append(matchword)
 
-print(matches)
+# If there are zero or fewer entries in the matches list...
+if len(matches) <= 0:
+    print("Sorry, there were no matches based on your guessword and pattern.")
+
+else:
+    # Use join() method to convert matches list to string, with the matchwords
+    # separated by a comma and a space;
+    matches = (', '.join(matches))
+    
+    print(f"These are your potential matches: {matches}")
+print()
